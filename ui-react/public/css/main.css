@@ -1,0 +1,19 @@
+.currencyImage {
+  width: 50px;
+}
+
+
+.currencies-list,
+.currencies-list-watched {
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px solid black;
+  margin: 20px;
+}
+
+
+input {
+  height: 40px;
+  font-size: 20px;
+  width: 300px;
+}
