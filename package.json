@@ -1,0 +1,25 @@
+{
+  "name": "react_express_porfolio_app",
+  "version": "1.0.0",
+  "description": "An application to manage your crytocurrency portfolio",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.14",
+    "webpack": "^4.0.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.18.2",
+    "mocha": "^3.0.2",
+    "webpack": "2.6.0",
+    "webpack-cli": "^2.0.9"
+  },
+  "scripts": {
+    "test": "mocha client/src/entities/specs",
+    "start": "cd server && nodemon server.js",
+    "build": "cd client && webpack -w"
+  },
+  "author": "",
+  "license": "ISC"
+}
