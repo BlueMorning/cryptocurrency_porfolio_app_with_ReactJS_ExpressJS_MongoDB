@@ -1,5 +1,6 @@
-const CurrencyEntity     = require('./../entities/currencyEntity');
-const CurrencyAPIRequest = require('./../requests/currencyAPIRequest');
+const CurrencyEntity          = require('./../entities/currencyEntity');
+const CurrencyAPIRequest      = require('./../requests/currencyAPIRequest');
+const DatabasePortfolioModel  = require('./DatabasePortfolioModel');
 
 class CurrenciesModel
 {
@@ -10,6 +11,7 @@ class CurrenciesModel
     this.resultLimit                    = 50;
     this.currencyAPIRequest             = new CurrencyAPIRequest();
     this.onRequestGetCurrencyDataList   = null;
+    this.databasePortfolioModel         = new DatabasePortfolioModel();
   }
 
   convertJSONCurrenciesToEntities(JSONCurrencies){
@@ -57,13 +59,26 @@ class CurrenciesModel
 
 
   searchForCurrencyDataList(coinNameFilter){
+
     this.coinNameFilter = coinNameFilter;
-    this.currencyAPIRequest.onRequestGetAllCurrenciesDone = this.requestGetAllCurrenciesDone.bind(this);
-    this.currencyAPIRequest.requestAllCurrencies();
+
+    this.databasePortfolioModel.checkCurrencyReferencesExist((isReferences) => {
+      if(! isReferences){
+        this.currencyAPIRequest.onRequestGetAllCurrenciesDone = this.requestGetAllCurrenciesDone.bind(this);
+        this.currencyAPIRequest.requestAllCurrencies();
+      }
+      else{
+        this.databasePortfolioModel.getAllCurrenciesReferences((currencyList) => {
+          this.currenciesList = this.filterCurrencies(currencyList, this.coinNameFilter, this.resultLimit)
+          this.sendRequestGetCurrencyDataList(this.currenciesList);
+        })
+      }
+    })
   }
 
   requestGetAllCurrenciesDone(currenciesJSON){
     this.currenciesList = this.convertJSONCurrenciesToEntities(currenciesJSON["Data"]);
+    this.databasePortfolioModel.insertCurrencyReferences(this.currenciesList);
     this.currenciesList = this.filterCurrencies(this.currenciesList, this.coinNameFilter, this.resultLimit)
     this.sendRequestGetCurrencyDataList(this.currenciesList);
   }

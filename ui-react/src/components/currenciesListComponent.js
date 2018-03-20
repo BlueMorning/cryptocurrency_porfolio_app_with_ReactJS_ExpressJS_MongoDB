@@ -13,12 +13,18 @@ class CurrenciesListComponent extends Component
   render(){
 
     let currencyLiList = this.props.currencies.map((currencyEntity) => {
-      return <CurrencyRowComponent currencyEntity={currencyEntity} key={currencyEntity.id} />
+      return <CurrencyRowComponent currencyEntity={currencyEntity} key={currencyEntity.coinId}/>
     });
 
-    return <div className="currencies-list"><ul>
-      {currencyLiList}
-    </ul></div>
+    console.log(this.props.currencies);
+
+    return <div className="currencies-list">
+            <table>
+                <tbody>
+                      {currencyLiList}
+                </tbody>
+            </table>
+          </div>
   }
 
 }

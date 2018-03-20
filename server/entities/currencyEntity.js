@@ -2,10 +2,10 @@ class CurrencyEntity
 {
 
   constructor(id, name, symbol, image){
-    this.id               = id;
+    this.coinId           = id;
     this.coinName         = name;
     this.coinSymbol       = symbol;
-    this.image            = "https://www.cryptocompare.com"+image;
+    this.coinImage        = "https://www.cryptocompare.com"+image;
 
     this.price            = null;
     this.high24h          = null;
