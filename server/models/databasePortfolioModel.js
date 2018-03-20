@@ -61,6 +61,23 @@ class DatabasePortfolioModel {
     })
   }
 
+  getCurrenciesReferencesByCoinName(coinNameFilter, resultLimit, callback){
+    this.connect(() => {
+
+      let query = {}
+
+      if(coinNameFilter != null && coinNameFilter != ""){
+        query = {coinName: {'$regex': `^${coinNameFilter}`,'$options' : 'i'}}
+        console.log(query);
+      }
+
+
+      this.db.collection(this.collectionCurrencyReference).find(query).limit(resultLimit).toArray(function(err, result){
+        callback(result);
+      });
+    })
+  }
+
   checkCurrencyReferencesExist(callback){
     this.connect(() => {
       this.db.collection(this.collectionCurrencyReference).find().toArray(function(err, result){

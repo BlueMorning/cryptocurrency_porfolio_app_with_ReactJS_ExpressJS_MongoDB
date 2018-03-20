@@ -68,8 +68,8 @@ class CurrenciesModel
         this.currencyAPIRequest.requestAllCurrencies();
       }
       else{
-        this.databasePortfolioModel.getAllCurrenciesReferences((currencyList) => {
-          this.currenciesList = this.filterCurrencies(currencyList, this.coinNameFilter, this.resultLimit)
+        this.databasePortfolioModel.getCurrenciesReferencesByCoinName(this.coinNameFilter, this.resultLimit, (currencyList) => {
+          this.currenciesList = currencyList;
           this.sendRequestGetCurrencyDataList(this.currenciesList);
         })
       }
