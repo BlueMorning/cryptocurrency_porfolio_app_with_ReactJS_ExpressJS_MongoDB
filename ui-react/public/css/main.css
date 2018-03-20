@@ -1,19 +1,73 @@
-.currencyImage {
-  width: 50px;
+
+/*** Element styling ***/
+
+input {
+  height: 40px;
+  font-size: 20px;
+  width: 300px;
 }
 
 
-.currencies-list,
-.currencies-list-watched {
+
+
+
+/*** Classes for coin rows ***/
+
+.currencies-list {
   height: 300px;
   overflow-y: scroll;
   border: 1px solid black;
   margin: 20px;
 }
 
+.rowCoinImage {
+  width: 50px;
+}
 
-input {
-  height: 40px;
-  font-size: 20px;
-  width: 300px;
+.rowContainerNameAndSymbol {
+
+}
+
+.rowCoinName {
+
+}
+
+.rowCoinSymbol {
+
+}
+
+.rowCoinPrice {
+
+}
+
+.rowCoinTotalVolume24h {
+
+}
+
+.rowCoinHigh24h {
+
+}
+
+.rowCoinLow24h {
+
+}
+
+.rowCoinChange24h {
+
+}
+
+.rowCoinActionWatch {
+
+}
+
+.rowCoinInputQty {
+
+}
+
+.rowCoinActionBuy {
+
+}
+
+.rowCoinActionSale {
+
 }

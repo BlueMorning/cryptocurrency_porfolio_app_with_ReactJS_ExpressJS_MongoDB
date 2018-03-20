@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import CurrencyRowComponent from './currencyRowComponent';
 
 class CurrenciesListComponent extends Component
 {
@@ -9,22 +10,10 @@ class CurrenciesListComponent extends Component
   }
 
 
-  handleOnClickAddCurrencyToWatch(currencyId, event)
-  {
-    this.props.onAddCurrencyToWatch(currencyId);
-  }
-
-
   render(){
 
     let currencyLiList = this.props.currencies.map((currencyEntity) => {
-      return <li key={currencyEntity.id}>
-        <div>
-          <div><img src={currencyEntity.image} className="currencyImage"/></div>
-          <div>{currencyEntity.coinName}</div>
-          <button onClick={this.handleOnClickAddCurrencyToWatch.bind(this, currencyEntity.id)}>WATCH</button>
-        </div>
-      </li>
+      return <CurrencyRowComponent currencyEntity={currencyEntity} key={currencyEntity.id} />
     });
 
     return <div className="currencies-list"><ul>

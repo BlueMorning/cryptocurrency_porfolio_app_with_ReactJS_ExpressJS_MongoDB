@@ -1,7 +1,6 @@
 import React, {Component}       from 'react';
 import FormSearchForCurrencies  from './formSearchForCurrencies';
 import CurrenciesListComponent  from './currenciesListComponent'
-import CurrencyWatchedList      from './currencyWatchedList'
 import ClientRequest            from './../requests/clientRequest';
 
 
@@ -13,8 +12,7 @@ class PortfolioComponent extends Component
     super(props);
     this.title = "Cryptocurrency porfolio with ReactJS";
     this.state = {
-      currencyFilteredList: [],
-      currenciesWatchedList:  []
+      currencyFilteredList: []
     }
 
     this.currencyFilteredList   = [];
@@ -23,8 +21,6 @@ class PortfolioComponent extends Component
     this.currencyNameForSearch  = null;
 
     this.handleSearchForCurrencies    = this.handleSearchForCurrencies.bind(this);
-    this.handleAddCurrencyToWatch     = this.handleAddCurrencyToWatch.bind(this);
-    this.handleRemoveCurrencyToWatch  = this.handleRemoveCurrencyToWatch.bind(this);
 
     this.clientRequest.onSearchForCurrencies = this.searchForCurrenciesDone.bind(this);
     this.clientRequest.searchForCurrencies("");
@@ -36,32 +32,13 @@ class PortfolioComponent extends Component
       <div>
         <h1>{this.title}</h1>
         <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}/>
-        <CurrenciesListComponent  currencies={this.state.currencyFilteredList}       onAddCurrencyToWatch={this.handleAddCurrencyToWatch}/>
-        <CurrencyWatchedList      currenciesWatched={this.state.currenciesWatchedList} onRemoveCurrencyToWatch={this.handleRemoveCurrencyToWatch}/>
+        <CurrenciesListComponent  currencies={this.state.currencyFilteredList} />
       </div>
     )
   }
 
   handleSearchForCurrencies(currencyName){
     this.clientRequest.searchForCurrencies(currencyName);
-  }
-
-
-  handleAddCurrencyToWatch(currencyId){
-    const currency = this.currencyFilteredList.filter((currencyEntity) => {
-      return currencyEntity.id == currencyId
-    })[0]
-
-    let currenciesWatchedList = this.state.currenciesWatchedList.concat([currency]);
-    this.setState({currenciesWatchedList: currenciesWatchedList});
-  }
-
-  handleRemoveCurrencyToWatch(currencyId){
-    let currenciesWatchedList = this.state.currenciesWatchedList.filter((currencyEntity) => {
-      return currencyEntity.id != currencyId
-    });
-
-    this.setState({currenciesWatchedList: currenciesWatchedList});
   }
 
   searchForCurrenciesDone(currencyDataList){

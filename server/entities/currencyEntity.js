@@ -8,8 +8,8 @@ class CurrencyEntity
     this.image            = "https://www.cryptocompare.com"+image;
 
     this.price            = null;
-    this.high24hour       = null;
-    this.low24hour        = null;
+    this.high24h          = null;
+    this.low24h           = null;
     this.totalVolume24h   = null;
     this.change24h        = null;
   }
