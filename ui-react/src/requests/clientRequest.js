@@ -59,6 +59,22 @@ class ClientRequest {
 
       request.send(JSON.stringify({transactionType: 0, coinSymbol: coinSymbol, quantity: quantity}));
     }
+
+
+    getWallet(callback){
+      let request = new XMLHttpRequest();
+      request.open("GET", this.urlBase + "/wallet");
+      request.addEventListener("load", () => {
+        if(request.status == 200){
+          callback(request.response);
+        }
+        else{
+          callback({});
+        }
+      })
+
+      request.send();
+    }
 }
 
 module.exports = ClientRequest;

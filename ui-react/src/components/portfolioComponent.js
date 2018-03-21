@@ -1,6 +1,7 @@
 import React, {Component}       from 'react';
 import FormSearchForCurrencies  from './formSearchForCurrencies';
 import CurrenciesListComponent  from './currenciesListComponent'
+import WalletComponent          from './walletComponent'
 import ClientRequest            from './../requests/clientRequest';
 
 
@@ -12,7 +13,8 @@ class PortfolioComponent extends Component
     super(props);
     this.title = "Cryptocurrency porfolio with ReactJS";
     this.state = {
-      currencyFilteredList: []
+      currencyFilteredList: [],
+      walletEntity: {}
     }
 
     this.currencyFilteredList   = [];
@@ -24,6 +26,9 @@ class PortfolioComponent extends Component
     this.handleBuyCurrency                    = this.handleBuyCurrency.bind(this);
     this.handleSellCurrency                   = this.handleSellCurrency.bind(this);
     this.refreshCurrencyRow                   = this.refreshCurrencyRow.bind(this);
+    this.handleGetWalletDone                  = this.handleGetWalletDone.bind(this);
+
+    this.clientRequest.getWallet(this.handleGetWalletDone);
     this.clientRequest.onSearchForCurrencies  = this.searchForCurrenciesDone.bind(this);
     this.clientRequest.searchForCurrencies("");
   }
@@ -34,6 +39,7 @@ class PortfolioComponent extends Component
       <div>
         <h1>{this.title}</h1>
         <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}/>
+        <WalletComponent          walletEntity={this.state.walletEntity} />
         <CurrenciesListComponent  currencies={this.state.currencyFilteredList}
                                   buyCurrency={this.handleBuyCurrency}
                                   sellCurrency={this.handleSellCurrency} />
@@ -70,12 +76,17 @@ class PortfolioComponent extends Component
     });
 
     if(currencyRow != null && currencyRow != undefined){
-      currencyRow.transactionQuantity   = 0;
       currencyRow.portfolioQuantity     = currencyPortfolioEntity.quantity;
       currencyRow.portfolioAveragePrice = currencyPortfolioEntity.averagePrice;
     }
 
     this.setState({currencyFilteredList: currencyFilteredList});
+    this.clientRequest.getWallet(this.handleGetWalletDone);
+  }
+
+  handleGetWalletDone(walletEntityJSON){
+    let walletEntity = JSON.parse(walletEntityJSON);
+    this.setState({walletEntity: walletEntity})
   }
 
 }

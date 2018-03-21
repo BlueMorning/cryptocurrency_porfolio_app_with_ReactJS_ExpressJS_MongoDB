@@ -10,7 +10,7 @@ class CurrencyRowComponent extends Component {
     super(props);
 
     this.state = {
-      transactionQuantity: this.props.currencyEntity.transactionQuantity
+      transactionQuantity: 0
     }
 
     this.handleChangeQty  = function(event){
@@ -18,11 +18,19 @@ class CurrencyRowComponent extends Component {
     }.bind(this);
 
     this.onClickBuy = function(){
-      this.props.buyCurrency(this.props.currencyEntity, this.state.transactionQuantity)
+      this.props.buyCurrency(this.props.currencyEntity, this.state.transactionQuantity);
+      this.setState({transactionQuantity: 0});
     }.bind(this)
 
     this.onClickSell = function(){
-      this.props.sellCurrency(this.props.currencyEntity, this.state.transactionQuantity)
+      if(this.state.transactionQuantity <= this.props.currencyEntity.portfolioQuantity){
+        this.props.sellCurrency(this.props.currencyEntity, this.state.transactionQuantity);
+        this.setState({transactionQuantity: 0});
+      }
+      else{
+        
+      }
+
     }.bind(this)
   }
 

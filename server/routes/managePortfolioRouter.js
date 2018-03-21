@@ -14,8 +14,8 @@ managePortfolioRouter.get("/searchForCurrencies", (req, res) => {
 
 managePortfolioRouter.get("/wallet", (req, res) => {
   const currenciesModel = new CurrenciesModel();
-  currenciesModel.getWalletEntity((walletEntiry) => {
-    res.send(walletEntiry);
+  currenciesModel.getWalletEntity((walletEntity) => {
+    res.send(walletEntity);
   })
 });
 
