@@ -148,6 +148,23 @@ class CurrenciesModel
 
     this.currencyAPIRequest.requestCurrencyDataList(coinSymbol);
   }
+
+  getWalletEntity(callback){
+    this.databasePortfolioModel.getWalletEntity(callback);
+  }
+
+  updateWalletValues(callback){
+    this.databasePortfolioModel.updateWalletValues(callback);
+  }
+
+  addCashToWallet(cashAmount, callback){
+    this.databasePortfolioModel.addCashToWallet(cashAmount, callback);
+  }
+
+  withdrawCashFromWallet(cashAmount, callback){
+    this.databasePortfolioModel.withdrawCashFromWallet(cashAmount, callback);
+  }
+
 }
 
 

@@ -218,7 +218,7 @@ class DatabasePortfolioModel {
         })
     }
 
-    updateWalletValues(){
+    updateWalletValues(callback){
       this.connect(() => {
 
           this.db.collection(this.collectionCurrencyWallet).findOne({}, (err, res) => {
@@ -227,15 +227,16 @@ class DatabasePortfolioModel {
 
               this.calculatePortfolioPurchaseValue((portfolioPurchaseValue) => {
 
-                  walletEntity.portfolioValue = portfolioPurchaseValue;
-
-
                   this.calculatePortfolioCurrentValue((portfolioCurrentValue) => {
 
-                    walletEntity.pendingProfit = portfolioCurrentValue - walletEntity.portfolioValue;
-                    walletEntity.totalValue    = portfolioCurrentValue + walletEntity.cash;
+                    walletEntity.portfolioValue = portfolioCurrentValue;
+                    walletEntity.pendingProfit  = portfolioCurrentValue - portfolioPurchaseValue;
+                    walletEntity.totalValue     = portfolioCurrentValue + walletEntity.cash;
                     this.db.collection(this.collectionCurrencyWallet).updateOne({_id: walletEntity._id}, walletEntity, function(err, res){
                       this.close();
+                      if(callback != null && callback != undefined){
+                        callback(walletEntity);
+                      }
                     }.bind(this));
                   })
               })
@@ -283,6 +284,41 @@ class DatabasePortfolioModel {
           }.bind(this)
 
           currencyAPIRequest.requestCurrencyDataList(coinNames);
+        })
+      })
+    }
+
+
+    getWalletEntity(callback){
+        this.connect(() => {
+          this.db.collection(this.collectionCurrencyWallet).findOne({}, (err, walletEntity) => {
+            callback(walletEntity);
+        })
+      })
+    }
+
+    addCashToWallet(cashAmount, callBack){
+      this.connect(() => {
+        this.db.collection(this.collectionCurrencyWallet).findOne({}, (err, walletEntity) => {
+          walletEntity.cash += cashAmount;
+          this.db.collection(this.collectionCurrencyWallet).updateOne({_id: walletEntity._id},
+                                                                      {$set: {cash: walletEntity.cash}},
+                                                                      (err, walletEntity) => {
+              this.updateWalletValues(callBack);
+          })
+        })
+      })
+    }
+
+    withdrawCashFromWallet(cashAmount, callBack){
+      this.connect(() => {
+        this.db.collection(this.collectionCurrencyWallet).findOne({}, (err, walletEntity) => {
+          walletEntity.cash -= cashAmount;
+          this.db.collection(this.collectionCurrencyWallet).updateOne({_id: walletEntity._id},
+                                                                      {$set: {cash: walletEntity.cash}},
+                                                                      (err, walletEntity) => {
+              this.updateWalletValues(callBack);
+          })
         })
       })
     }

@@ -10,8 +10,21 @@ managePortfolioRouter.get("/searchForCurrencies", (req, res) => {
   }.bind(this);
   currenciesModel.searchForCurrencyDataList(req.query.coinName);
 
-})
+});
 
+managePortfolioRouter.get("/wallet", (req, res) => {
+  const currenciesModel = new CurrenciesModel();
+  currenciesModel.getWalletEntity((walletEntiry) => {
+    res.send(walletEntiry);
+  })
+});
+
+managePortfolioRouter.get("/updateWallet", (req, res) => {
+  const currenciesModel = new CurrenciesModel();
+  currenciesModel.updateWalletValues((walletEntity) => {
+    res.send(walletEntity);
+  })
+});
 
 managePortfolioRouter.post("/currencyTransaction", (req, res) => {
   const currenciesModel = new CurrenciesModel();
@@ -20,6 +33,20 @@ managePortfolioRouter.post("/currencyTransaction", (req, res) => {
   }
   currenciesModel.makeCurrencyTransaction(req.body.transactionType, req.body.coinSymbol, req.body.quantity);
 
+});
+
+managePortfolioRouter.post("/addCashToWallet", (req, res) => {
+  const currenciesModel = new CurrenciesModel();
+  currenciesModel.addCashToWallet(req.body.cashAmount, (walletEntity) => {
+    res.send(walletEntity);
+  });
+})
+
+managePortfolioRouter.post("/withdrawCashFromWallet", (req, res) => {
+  const currenciesModel = new CurrenciesModel();
+  currenciesModel.withdrawCashFromWallet(req.body.cashAmount, (walletEntity) => {
+    res.send(walletEntity);
+  });
 })
 
 
