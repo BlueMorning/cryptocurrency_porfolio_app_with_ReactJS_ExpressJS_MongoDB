@@ -63,7 +63,7 @@ class ClientRequest {
 
     getWallet(callback){
       let request = new XMLHttpRequest();
-      request.open("GET", this.urlBase + "/wallet");
+      request.open("GET", this.urlBase + "/updateWallet");
       request.addEventListener("load", () => {
         if(request.status == 200){
           callback(request.response);

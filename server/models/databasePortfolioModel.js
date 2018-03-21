@@ -109,6 +109,7 @@ class DatabasePortfolioModel {
             currencyPortfolio        = result[0];
           }
           else{
+            currencyPortfolio.coinSymbol    = currencyEntity.coinSymbol;
             currencyPortfolio.quantity      = 0;
             currencyPortfolio.totalPrice    = 0;
             currencyPortfolio.averagePrice  = 0;
@@ -132,7 +133,7 @@ class DatabasePortfolioModel {
           currencyPortfolio.averagePrice  = parseFloat(currencyPortfolio.totalPrice) / parseFloat(currencyPortfolio.quantity);
 
 
-          if(currencyPortfolio._id !== undefined){
+          if(currencyPortfolio._id != undefined && currencyPortfolio._id != null){
             this.db.collection(this.collectionCurrencyPortfolio).updateOne(
               {_id:           currencyPortfolio._id},
               { $set:
@@ -142,24 +143,23 @@ class DatabasePortfolioModel {
                   averagePrice:  currencyPortfolio.averagePrice}
                 },
               function(err, res){
+                this.onMakeCurrencyTransactionDone(currencyPortfolio);
                 this.updateWalletCashAndProfit(purchasePrice, salePrice, profitMade);
                 this.close();
               }.bind(this))
           }
           else {
             this.db.collection(this.collectionCurrencyPortfolio).insertOne(
-              { coinSymbol:    currencyEntity.coinSymbol,
+              { coinSymbol:    currencyPortfolio.coinSymbol,
                 quantity:      currencyPortfolio.quantity,
                 totalPrice:    currencyPortfolio.totalPrice,
                 averagePrice:  currencyPortfolio.averagePrice},
                 function(err, res){
+                  this.onMakeCurrencyTransactionDone(currencyPortfolio);
                   this.updateWalletCashAndProfit(purchasePrice, salePrice, profitMade);
                   this.close();
                 }.bind(this))
           }
-
-          this.onMakeCurrencyTransactionDone(currencyPortfolio);
-
         })
       })
     }
@@ -221,6 +221,7 @@ class DatabasePortfolioModel {
 
               let walletEntity = res;
 
+              if(walletEntity != null && walletEntity != undefined){
               this.calculatePortfolioPurchaseValue((portfolioPurchaseValue) => {
 
                   this.calculatePortfolioCurrentValue((portfolioCurrentValue) => {
@@ -236,6 +237,7 @@ class DatabasePortfolioModel {
                     }.bind(this));
                   })
               })
+            }
         })
       })
     }

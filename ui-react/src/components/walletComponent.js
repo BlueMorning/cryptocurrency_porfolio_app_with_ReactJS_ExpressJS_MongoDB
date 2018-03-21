@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-
+import MathHelper from './../helpers/mathHelper';
 
 class WalletComponent extends Component {
 
   constructor(props){
     super(props);
+
+    this.mathHelper = new MathHelper();
 
     this.state ={
       cashAmount: 0
@@ -31,31 +33,32 @@ class WalletComponent extends Component {
 
   render(){
     return <div className="divContainerWallet">
-            <div>
-              <div></div><div>{this.props.walletEntity.cash}</div>
+            <div className="rowWallet">
+              <div className="labelWallet">Cash</div><div className="valueWallet">$ {this.mathHelper.precisionRound(this.props.walletEntity.cash, 2)}</div>
             </div>
-            <div>
-              <div></div><div>{this.props.walletEntity.portfolioValue}</div>
+            <div className="rowWallet">
+              <div className="labelWallet">Portfolio value</div><div className="valueWallet">$ {this.mathHelper.precisionRound(this.props.walletEntity.portfolioValue, 2)}</div>
             </div>
-            <div>
-              <div></div><div>{this.props.walletEntity.totalValue}</div>
+            <div className="rowWallet">
+              <div className="labelWallet">Total value</div><div className="valueWallet">$ {this.mathHelper.precisionRound(this.props.walletEntity.totalValue, 2)}</div>
             </div>
-            <div>
-              <div></div><div>{this.props.walletEntity.pendingProfit}</div>
+            <div className="rowWallet">
+              <div className="labelWallet">Pending profit</div><div className="valueWallet">$ {this.mathHelper.precisionRound(this.props.walletEntity.pendingProfit, 2)}</div>
             </div>
-            <div>
-              <div></div><div>{this.props.walletEntity.profit}</div>
+            <div className="rowWallet">
+              <div className="labelWallet">Profit made</div><div className="valueWallet">$ {this.mathHelper.precisionRound(this.props.walletEntity.profit, 2)}</div>
             </div>
-            <div>
-              <div>
-                Cash <input type="number"
-                            min="0"
-                            value={this.state.cashAmount}
-                            onChange={this.handleCashChange}/>
+            <div className="rowWallet">
+              <div className="labelWallet">
+                Cash $<input type="number"
+                             min="0"
+                             value={this.state.cashAmount}
+                             onChange={this.handleCashChange}
+                             className="cashInput"/>
               </div>
-              <div>
-                <button onClick={this.handleAddCash}>Add</button>
-                <button onClick={this.handleWithdrawCash}>Withdraw</button>
+              <div className="cashActions">
+                <button className="button-green" onClick={this.handleAddCash}>Add</button>
+                <button className="button-red" onClick={this.handleWithdrawCash}>Withdraw</button>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ClientRequest from './../requests/clientRequest';
+import MathHelper from './../helpers/mathHelper';
 
 
 class CurrencyRowComponent extends Component {
@@ -8,6 +9,8 @@ class CurrencyRowComponent extends Component {
 
   constructor(props){
     super(props);
+
+    this.mathHelper = new MathHelper();
 
     this.state = {
       transactionQuantity: 0
@@ -28,7 +31,7 @@ class CurrencyRowComponent extends Component {
         this.setState({transactionQuantity: 0});
       }
       else{
-        
+
       }
 
     }.bind(this)
@@ -49,28 +52,25 @@ class CurrencyRowComponent extends Component {
             </div>
           </td>
           <td>
-            <div className="rowCoinPrice">{this.props.currencyEntity.coinPrice}</div>
+            <div className="rowCoinPrice">$ {this.props.currencyEntity.coinPrice}</div>
           </td>
           <td>
-            <div className="rowCoinTotalVolume24h">{this.props.currencyEntity.coinTotalVolume24h}</div>
+            <div className="rowCoinHigh24h">$ {this.props.currencyEntity.coinHigh24h}</div>
           </td>
           <td>
-            <div className="rowCoinHigh24h">{this.props.currencyEntity.coinHigh24h}</div>
+            <div className="rowCoinLow24h">$ {this.props.currencyEntity.coinLow24h}</div>
           </td>
           <td>
-            <div className="rowCoinLow24h">{this.props.currencyEntity.coinLow24h}</div>
+            <div className="rowCoinChange24h">$ {this.mathHelper.precisionRound(this.props.currencyEntity.coinChange24h, 6)}</div>
           </td>
           <td>
-            <div className="rowCoinChange24h">{this.props.currencyEntity.coinChange24h}</div>
-          </td>
-          <td>
-            <div className="rowCoinActionWatch"><button>Watch</button></div>
+            <div className="rowCoinActionWatch"><button className="button-blue">Watch</button></div>
           </td>
           <td>
             <div className="rowCoinQty">{this.props.currencyEntity.portfolioQuantity}</div>
           </td>
           <td>
-            <div className="rowCoinPrice">{this.props.currencyEntity.portfolioAveragePrice}</div>
+            <div className="rowCoinPrice">$ {this.mathHelper.precisionRound(this.props.currencyEntity.portfolioAveragePrice, 6)}</div>
           </td>
           <td>
             <div className="rowCoinInputQty"><input type="number" className="coinInputQty"
@@ -80,10 +80,10 @@ class CurrencyRowComponent extends Component {
             </div>
           </td>
           <td>
-            <div className="rowCoinActionBuy"><button onClick={this.onClickBuy}>Buy</button></div>
+            <div className="rowCoinActionBuy"><button className="button-green" onClick={this.onClickBuy}>Buy</button></div>
           </td>
           <td>
-            <div className="rowCoinActionSell"><button onClick={this.onClickSell}>Sell</button></div>
+            <div className="rowCoinActionSell"><button className="button-red" onClick={this.onClickSell}>Sell</button></div>
           </td>
      </tr>
     )

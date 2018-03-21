@@ -11,7 +11,7 @@ class PortfolioComponent extends Component
   constructor(props)
   {
     super(props);
-    this.title = "Cryptocurrency porfolio with ReactJS";
+    this.title = "Cryptocurrency portfolio app. with ReactJS, ExpressJS and MongoDB.";
     this.state = {
       currencyFilteredList: [],
       walletEntity: {}
@@ -38,12 +38,14 @@ class PortfolioComponent extends Component
   render()
   {
     return (
-      <div>
+      <div className="mainContainer">
         <h1>{this.title}</h1>
-        <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}/>
-        <WalletComponent          walletEntity={this.state.walletEntity}
-                                  addCash={this.handleAddCash}
-                                  withdrawCash={this.handleWithdrawCash}/>
+        <div className="containerHeader">
+          <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}/>
+          <WalletComponent          walletEntity={this.state.walletEntity}
+                                    addCash={this.handleAddCash}
+                                    withdrawCash={this.handleWithdrawCash}/>
+        </div>
         <CurrenciesListComponent  currencies={this.state.currencyFilteredList}
                                   buyCurrency={this.handleBuyCurrency}
                                   sellCurrency={this.handleSellCurrency} />
