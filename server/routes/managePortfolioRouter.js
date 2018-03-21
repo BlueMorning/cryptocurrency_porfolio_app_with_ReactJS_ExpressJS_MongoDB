@@ -31,7 +31,8 @@ managePortfolioRouter.post("/currencyTransaction", (req, res) => {
   currenciesModel.onMakeCurrencyTransactionDone = function(currencyPortfolio){
     res.send(currencyPortfolio);
   }
-  currenciesModel.makeCurrencyTransaction(req.body.transactionType, req.body.coinSymbol, req.body.quantity);
+  console.log(req.body);
+  currenciesModel.makeCurrencyTransaction(req.body.transactionType, req.body.coinSymbol, parseInt(req.body.quantity));
 
 });
 

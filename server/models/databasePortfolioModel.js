@@ -114,16 +114,19 @@ class DatabasePortfolioModel {
             currencyPortfolio.averagePrice  = 0;
           }
 
+          quantity                 = parseInt(quantity);
+          currencyEntity.coinPrice = parseFloat(currencyEntity.coinPrice);
+
           if(transactionType == 1){
             currencyPortfolio.quantity   += quantity;
-            currencyPortfolio.totalPrice += currencyEntity.coinPrice;
+            currencyPortfolio.totalPrice += quantity * currencyEntity.coinPrice;
             purchasePrice                 = quantity * currencyEntity.coinPrice;
           }
           else{
             currencyPortfolio.quantity   -= quantity;
-            currencyPortfolio.totalPrice -= currencyEntity.coinPrice;
+            currencyPortfolio.totalPrice -= quantity * currencyEntity.coinPrice;
             salePrice                     = quantity * currencyEntity.coinPrice;
-            profitMade                    = (currencyEntity.coinPrice - currencyPortfolio.averagePrice)*quantity;
+            profitMade                    = (currencyEntity.coinPrice - currencyPortfolio.averagePrice) * quantity;
           }
 
           currencyPortfolio.averagePrice  = parseFloat(currencyPortfolio.totalPrice) / parseFloat(currencyPortfolio.quantity);
@@ -178,13 +181,6 @@ class DatabasePortfolioModel {
             walletEntity.cash   -= purchasePrice;
             walletEntity.cash   += salePrice;
             walletEntity.profit += profitMade;
-
-            // this.cash           = cash;
-            // this.portfolioValue = portfolioValue;
-            // this.totalValue     = this.cash + this.portfolioValue;
-            // this.pendingProfit  = pendingProfit;
-            // this.profit         = profit;
-
 
             if(walletEntity._id !== undefined){
               this.db.collection(this.collectionCurrencyWallet).updateOne(
@@ -276,7 +272,8 @@ class DatabasePortfolioModel {
             let portfolioCurrentValue = 0;
             portfolioCurrencies.forEach((currencyPortfolio) => {
               portfolioCurrentValue += (currencyPortfolio.quantity * currenciesJSONList["RAW"][currencyPortfolio.coinSymbol]["USD"]["PRICE"])
-
+              console.log("quantity :"+currencyPortfolio.quantity);
+              console.log("price :"+currenciesJSONList["RAW"][currencyPortfolio.coinSymbol]["USD"]["PRICE"]);
             })
 
             callback(portfolioCurrentValue);
@@ -319,6 +316,14 @@ class DatabasePortfolioModel {
                                                                       (err, walletEntity) => {
               this.updateWalletValues(callBack);
           })
+        })
+      })
+    }
+
+    getCurrencyPortfolio(callback){
+      this.connect(() => {
+        this.db.collection(this.collectionCurrencyPortfolio).find().toArray((err, portfolioCurrencies) => {
+          callback(portfolioCurrencies);
         })
       })
     }

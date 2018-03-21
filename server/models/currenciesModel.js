@@ -124,7 +124,27 @@ class CurrenciesModel
       finalCurrencyList.push(currency);
     }
 
-    this.onRequestGetCurrencyDataList(finalCurrencyList);
+    this.databasePortfolioModel.getCurrencyPortfolio((portfolioCurrencies) => {
+
+      finalCurrencyList.forEach((currency) => {
+        let portfolioCurrency = portfolioCurrencies.filter((currencyInPortfolio) => {
+          return currencyInPortfolio.coinSymbol == currency.coinSymbol;
+        });
+
+        if(Array.isArray(portfolioCurrency) && portfolioCurrency.length === 1)
+        {
+          currency.portfolioQuantity      = portfolioCurrency[0].quantity;
+          currency.portfolioAveragePrice  = portfolioCurrency[0].averagePrice;
+        }
+        else
+        {
+          currency.portfolioQuantity      = 0;
+          currency.portfolioAveragePrice  = 0;
+        }
+      })
+
+      this.onRequestGetCurrencyDataList(finalCurrencyList);
+    })
   }
 
   getCurrencyCurrentValue(coinSymbol, callback){
