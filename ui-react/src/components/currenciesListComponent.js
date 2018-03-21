@@ -6,14 +6,16 @@ class CurrenciesListComponent extends Component
 
   constructor(props){
     super(props);
-
   }
 
 
   render(){
 
     let currencyLiList = this.props.currencies.map((currencyEntity) => {
-      return <CurrencyRowComponent currencyEntity={currencyEntity} key={currencyEntity.coinId}/>
+      return <CurrencyRowComponent currencyEntity={currencyEntity}
+                                   key={currencyEntity.coinId}
+                                   buyCurrency={this.props.buyCurrency}
+                                   sellCurrency={this.props.sellCurrency} />
     });
 
     return <div className="currencies-list">

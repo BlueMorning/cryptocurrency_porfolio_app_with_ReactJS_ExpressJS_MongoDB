@@ -13,6 +13,7 @@ class CurrencyEntity
     this.coinChange24h          = 0;
     this.portfolioQuantity      = 0;
     this.portfolioAveragePrice  = 0;
+    this.transactionQuantity    = 0;
   }
 
 }

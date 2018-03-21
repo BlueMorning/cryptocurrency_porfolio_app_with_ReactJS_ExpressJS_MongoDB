@@ -1,10 +1,13 @@
 
 /*** Element styling ***/
 
-input {
+input[type="number"] {
   height: 40px;
-  font-size: 20px;
-  width: 300px;
+  font-size: 90%;
+  font-weight: 200;
+  width: 100px;
+  text-align: right;
+  padding: 3px 5px;
 }
 
 
@@ -61,7 +64,7 @@ input {
 }
 
 .rowCoinQty {
-  
+
 }
 
 .rowCoinInputQty {

@@ -135,11 +135,13 @@ class CurrenciesModel
         {
           currency.portfolioQuantity      = portfolioCurrency[0].quantity;
           currency.portfolioAveragePrice  = portfolioCurrency[0].averagePrice;
+          currency.transactionQuantity    = 0;
         }
         else
         {
           currency.portfolioQuantity      = 0;
           currency.portfolioAveragePrice  = 0;
+          currency.transactionQuantity    = 0;
         }
       })
 

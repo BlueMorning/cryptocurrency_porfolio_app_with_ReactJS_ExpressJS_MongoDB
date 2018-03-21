@@ -272,8 +272,6 @@ class DatabasePortfolioModel {
             let portfolioCurrentValue = 0;
             portfolioCurrencies.forEach((currencyPortfolio) => {
               portfolioCurrentValue += (currencyPortfolio.quantity * currenciesJSONList["RAW"][currencyPortfolio.coinSymbol]["USD"]["PRICE"])
-              console.log("quantity :"+currencyPortfolio.quantity);
-              console.log("price :"+currenciesJSONList["RAW"][currencyPortfolio.coinSymbol]["USD"]["PRICE"]);
             })
 
             callback(portfolioCurrentValue);

@@ -9,34 +9,21 @@ class CurrencyRowComponent extends Component {
   constructor(props){
     super(props);
 
-    this.transactionQty = 0;
-    this.state          = {currencyEntity:  this.props.currencyEntity};
+    this.state = {
+      transactionQuantity: this.props.currencyEntity.transactionQuantity
+    }
 
     this.handleChangeQty  = function(event){
-      this.transactionQty = parseInt(event.target.value);
+      this.setState({transactionQuantity: parseInt(event.target.value)});
     }.bind(this);
 
-    this.clientRequest    = new ClientRequest();
+    this.onClickBuy = function(){
+      this.props.buyCurrency(this.props.currencyEntity, this.state.transactionQuantity)
+    }.bind(this)
 
-    this.onClickBuy       = function(){
-                                        this.clientRequest.buyCurrency( this.state.currencyEntity.coinSymbol,
-                                                                        this.transactionQty,
-                                                                        this.handleTransactionDone);
-                                      }.bind(this);
-
-    this.onClickSell      = function(){
-                                        this.clientRequest.sellCurrency(this.state.currencyEntity.coinSymbol,
-                                                                        this.transactionQty,
-                                                                        this.handleTransactionDone);
-                                      }.bind(this);
-
-    this.handleTransactionDone = function(currencyPortfolioJSON){
-      let currencyPortfolio             = JSON.parse(currencyPortfolioJSON);
-      let currencyEntity                = this.props.currencyEntity;
-      currencyEntity.coinQuantity       = currencyPortfolio.quantity;
-      currencyEntity.coinAveragePrice   = currencyPortfolio.averagePrice;
-      this.setState({currencyEntity: currencyEntity});
-    }.bind(this);
+    this.onClickSell = function(){
+      this.props.sellCurrency(this.props.currencyEntity, this.state.transactionQuantity)
+    }.bind(this)
   }
 
   render(){
@@ -44,41 +31,45 @@ class CurrencyRowComponent extends Component {
       <tr >
           <td>
             <div>
-              <img src={this.state.currencyEntity.coinImage} className="rowCoinImage" alt={this.state.currencyEntity.coinName}/>
+              <img src={this.props.currencyEntity.coinImage} className="rowCoinImage" alt={this.props.currencyEntity.coinName}/>
             </div>
           </td>
           <td>
             <div className="rowContainerNameAndSymbol">
-              <div className="rowCoinName">{this.state.currencyEntity.coinName}</div>
-              <div className="rowCoinSymbol">{this.state.currencyEntity.coinSymbol}</div>
+              <div className="rowCoinName">{this.props.currencyEntity.coinName}</div>
+              <div className="rowCoinSymbol">{this.props.currencyEntity.coinSymbol}</div>
             </div>
           </td>
           <td>
-            <div className="rowCoinPrice">{this.state.currencyEntity.coinPrice}</div>
+            <div className="rowCoinPrice">{this.props.currencyEntity.coinPrice}</div>
           </td>
           <td>
-            <div className="rowCoinTotalVolume24h">{this.state.currencyEntity.coinTotalVolume24h}</div>
+            <div className="rowCoinTotalVolume24h">{this.props.currencyEntity.coinTotalVolume24h}</div>
           </td>
           <td>
-            <div className="rowCoinHigh24h">{this.state.currencyEntity.coinHigh24h}</div>
+            <div className="rowCoinHigh24h">{this.props.currencyEntity.coinHigh24h}</div>
           </td>
           <td>
-            <div className="rowCoinLow24h">{this.state.currencyEntity.coinLow24h}</div>
+            <div className="rowCoinLow24h">{this.props.currencyEntity.coinLow24h}</div>
           </td>
           <td>
-            <div className="rowCoinChange24h">{this.state.currencyEntity.coinChange24h}</div>
+            <div className="rowCoinChange24h">{this.props.currencyEntity.coinChange24h}</div>
           </td>
           <td>
             <div className="rowCoinActionWatch"><button>Watch</button></div>
           </td>
           <td>
-            <div className="rowCoinQty">{this.state.currencyEntity.portfolioQuantity}</div>
+            <div className="rowCoinQty">{this.props.currencyEntity.portfolioQuantity}</div>
           </td>
           <td>
-            <div className="rowCoinPrice">{this.state.currencyEntity.portfolioAveragePrice}</div>
+            <div className="rowCoinPrice">{this.props.currencyEntity.portfolioAveragePrice}</div>
           </td>
           <td>
-            <div className="rowCoinInputQty"><input type="number" min="0" onChange={this.handleChangeQty}/></div>
+            <div className="rowCoinInputQty"><input type="number" className="coinInputQty"
+                                                    min="0"
+                                                    value={this.state.transactionQuantity}
+                                                    onChange={this.handleChangeQty}/>
+            </div>
           </td>
           <td>
             <div className="rowCoinActionBuy"><button onClick={this.onClickBuy}>Buy</button></div>
