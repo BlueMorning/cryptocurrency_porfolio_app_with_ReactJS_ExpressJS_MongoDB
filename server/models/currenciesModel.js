@@ -11,6 +11,7 @@ class CurrenciesModel
     this.resultLimit                    = 50;
     this.currencyAPIRequest             = new CurrencyAPIRequest();
     this.onRequestGetCurrencyDataList   = null;
+    this.onMakeCurrencyTransactionDone  = null;
     this.databasePortfolioModel         = new DatabasePortfolioModel();
   }
 
@@ -95,7 +96,6 @@ class CurrenciesModel
       }
     })
 
-
     if(coinSymbols != null && coinSymbols != ""){
       coinSymbols = coinSymbols.substring(0, coinSymbols.length-1);
     }
@@ -115,11 +115,11 @@ class CurrenciesModel
         return currency.coinSymbol == coinSymbol;
       })[0];
 
-      currency.price            = currenciesJSONList[coinSymbol]["USD"]["PRICE"];
-      currency.high24hour       = currenciesJSONList[coinSymbol]["USD"]["HIGH24HOUR"];
-      currency.low24hour        = currenciesJSONList[coinSymbol]["USD"]["LOW24HOUR"];
-      currency.totalVolume24h   = currenciesJSONList[coinSymbol]["USD"]["TOTALVOLUME24H"];
-      currency.change24h        = currenciesJSONList[coinSymbol]["USD"]["CHANGE24HOUR"];
+      currency.coinPrice            = currenciesJSONList[coinSymbol]["USD"]["PRICE"];
+      currency.coinHigh24h          = currenciesJSONList[coinSymbol]["USD"]["HIGH24HOUR"];
+      currency.coinLow24h           = currenciesJSONList[coinSymbol]["USD"]["LOW24HOUR"];
+      currency.coinTotalVolume24h   = currenciesJSONList[coinSymbol]["USD"]["TOTALVOLUME24H"];
+      currency.coinChange24h        = currenciesJSONList[coinSymbol]["USD"]["CHANGE24HOUR"];
 
       finalCurrencyList.push(currency);
     }
@@ -127,6 +127,27 @@ class CurrenciesModel
     this.onRequestGetCurrencyDataList(finalCurrencyList);
   }
 
+  getCurrencyCurrentValue(coinSymbol, callback){
+    this.currencyAPIRequest.onRequestGetCurrencyDataList = this.requestGetCurrencyDataListDone.bind(this);
+    this.requestCurrencyDataList([coinSymbol])
+  }
+
+  makeCurrencyTransaction(transactionType, coinSymbol, quantity){
+    this.currencyAPIRequest.onRequestGetCurrencyDataList = function(currencyJSON){
+      let currencyValues              = currencyJSON["RAW"][coinSymbol]["USD"];
+      let currencyEntity              = {};
+      currencyEntity.coinSymbol       = coinSymbol;
+      currencyEntity.coinPrice        = currencyValues["PRICE"];
+      this.databasePortfolioModel.onMakeCurrencyTransactionDone = function(currencyPortfolio){
+        this.onMakeCurrencyTransactionDone(currencyPortfolio);
+      }.bind(this);
+
+      this.databasePortfolioModel.makeCurrencyTransaction(transactionType, currencyEntity, quantity);
+
+    }.bind(this)
+
+    this.currencyAPIRequest.requestCurrencyDataList(coinSymbol);
+  }
 }
 
 

@@ -16,8 +16,6 @@ class CurrenciesListComponent extends Component
       return <CurrencyRowComponent currencyEntity={currencyEntity} key={currencyEntity.coinId}/>
     });
 
-    console.log(this.props.currencies);
-
     return <div className="currencies-list">
             <table>
                 <tbody>

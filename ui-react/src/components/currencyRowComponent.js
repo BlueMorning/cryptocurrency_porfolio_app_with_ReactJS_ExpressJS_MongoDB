@@ -15,7 +15,7 @@ class CurrencyRowComponent extends Component {
       <tr >
           <td>
             <div>
-              <img src={this.currencyEntity.coinImage} className="rowCoinImage"/>
+              <img src={this.currencyEntity.coinImage} className="rowCoinImage" alt={this.currencyEntity.coinName}/>
             </div>
           </td>
           <td>

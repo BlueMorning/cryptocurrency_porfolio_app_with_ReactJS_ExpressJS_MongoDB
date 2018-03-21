@@ -13,6 +13,15 @@ managePortfolioRouter.get("/searchForCurrencies", (req, res) => {
 })
 
 
+managePortfolioRouter.post("/currencyTransaction", (req, res) => {
+  const currenciesModel = new CurrenciesModel();
+  currenciesModel.onMakeCurrencyTransactionDone = function(currencyPortfolio){
+    res.send(currencyPortfolio);
+  }
+  currenciesModel.makeCurrencyTransaction(req.body.transactionType, req.body.coinSymbol, req.body.quantity);
+
+})
+
 
 
 

@@ -42,7 +42,6 @@ class PortfolioComponent extends Component
   }
 
   searchForCurrenciesDone(currencyDataList){
-    console.log(currencyDataList);
     this.currencyFilteredList = currencyDataList;
     this.setState({currencyFilteredList: this.currencyFilteredList});
   }
