@@ -75,6 +75,38 @@ class ClientRequest {
 
       request.send();
     }
+
+    addCashToWallet(cashAmount, callback){
+      let request = new XMLHttpRequest();
+      request.open("POST", this.urlBase + "/addCashToWallet");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.addEventListener("load", () => {
+        if(request.status == 200){
+          callback(request.response);
+        }
+        else{
+          callback({});
+        }
+      })
+
+      request.send(JSON.stringify({cashAmount: cashAmount}));
+    }
+
+    withdrawCashFromWallet(cashAmount, callback){
+      let request = new XMLHttpRequest();
+      request.open("POST", this.urlBase + "/withdrawCashFromWallet");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.addEventListener("load", () => {
+        if(request.status == 200){
+          callback(request.response);
+        }
+        else{
+          callback({});
+        }
+      })
+
+      request.send(JSON.stringify({cashAmount: cashAmount}));
+    }
 }
 
 module.exports = ClientRequest;

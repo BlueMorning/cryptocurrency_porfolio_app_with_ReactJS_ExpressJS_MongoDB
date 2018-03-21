@@ -27,6 +27,8 @@ class PortfolioComponent extends Component
     this.handleSellCurrency                   = this.handleSellCurrency.bind(this);
     this.refreshCurrencyRow                   = this.refreshCurrencyRow.bind(this);
     this.handleGetWalletDone                  = this.handleGetWalletDone.bind(this);
+    this.handleAddCash                        = this.handleAddCash.bind(this);
+    this.handleWithdrawCash                   = this.handleWithdrawCash.bind(this);
 
     this.clientRequest.getWallet(this.handleGetWalletDone);
     this.clientRequest.onSearchForCurrencies  = this.searchForCurrenciesDone.bind(this);
@@ -39,7 +41,9 @@ class PortfolioComponent extends Component
       <div>
         <h1>{this.title}</h1>
         <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}/>
-        <WalletComponent          walletEntity={this.state.walletEntity} />
+        <WalletComponent          walletEntity={this.state.walletEntity}
+                                  addCash={this.handleAddCash}
+                                  withdrawCash={this.handleWithdrawCash}/>
         <CurrenciesListComponent  currencies={this.state.currencyFilteredList}
                                   buyCurrency={this.handleBuyCurrency}
                                   sellCurrency={this.handleSellCurrency} />
@@ -87,6 +91,18 @@ class PortfolioComponent extends Component
   handleGetWalletDone(walletEntityJSON){
     let walletEntity = JSON.parse(walletEntityJSON);
     this.setState({walletEntity: walletEntity})
+  }
+
+  handleAddCash(cashAmount){
+    this.clientRequest.addCashToWallet(cashAmount, (walletEntity) => {
+      this.handleGetWalletDone(walletEntity);
+    })
+  }
+
+  handleWithdrawCash(cashAmount){
+    this.clientRequest.withdrawCashFromWallet(cashAmount, (walletEntity) => {
+      this.handleGetWalletDone(walletEntity);
+    })
   }
 
 }

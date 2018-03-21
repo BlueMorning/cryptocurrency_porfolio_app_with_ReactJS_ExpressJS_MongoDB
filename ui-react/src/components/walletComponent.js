@@ -5,13 +5,29 @@ class WalletComponent extends Component {
 
   constructor(props){
     super(props);
+
+    this.state ={
+      cashAmount: 0
+    }
+
+    this.handleCashChange   = this.handleCashChange.bind(this);
+    this.handleAddCash      = this.handleAddCash.bind(this);
+    this.handleWithdrawCash = this.handleWithdrawCash.bind(this);
   }
 
-  // this.cash           = cash;
-  // this.portfolioValue = portfolioValue;
-  // this.totalValue     = this.cash + this.portfolioValue;
-  // this.pendingProfit  = pendingProfit;
-  // this.profit         = profit;
+  handleCashChange(event){
+    this.setState({cashAmount: parseInt(event.target.value)})
+  }
+
+  handleAddCash(event){
+    this.props.addCash(this.state.cashAmount);
+    this.setState({cashAmount: 0});
+  }
+
+  handleWithdrawCash(event){
+    this.props.withdrawCash(this.state.cashAmount);
+    this.setState({cashAmount: 0});
+  }
 
   render(){
     return <div className="divContainerWallet">
@@ -32,11 +48,14 @@ class WalletComponent extends Component {
             </div>
             <div>
               <div>
-                Cash <input type="number" min="0" />
+                Cash <input type="number"
+                            min="0"
+                            value={this.state.cashAmount}
+                            onChange={this.handleCashChange}/>
               </div>
               <div>
-                <button>Add</button>
-                <button>Withdraw</button>
+                <button onClick={this.handleAddCash}>Add</button>
+                <button onClick={this.handleWithdrawCash}>Withdraw</button>
               </div>
             </div>
           </div>
