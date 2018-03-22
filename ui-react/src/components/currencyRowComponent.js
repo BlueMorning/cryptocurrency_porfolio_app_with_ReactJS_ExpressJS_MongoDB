@@ -13,7 +13,8 @@ class CurrencyRowComponent extends Component {
     this.mathHelper = new MathHelper();
 
     this.state = {
-      transactionQuantity: 0
+      transactionQuantity: 0,
+      priceClassName: "price-normal"
     }
 
     this.handleChangeQty  = function(event){
@@ -37,6 +38,24 @@ class CurrencyRowComponent extends Component {
     }.bind(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.currencyEntity.coinPrice > nextProps.currencyEntity.coinPrice) {
+      this.toggleClassListBlink("price-normal", "price-green");
+    }
+    else if(this.props.currencyEntity.coinPrice < nextProps.currencyEntity.coinPrice){
+      this.toggleClassListBlink("price-normal", "price-red");
+    }
+  }
+
+  toggleClassListBlink(initialClassName, tempClassName){
+    this.setState({priceClassName: tempClassName}, () => {
+      setTimeout(() => {
+        this.setState({priceClassName: initialClassName});
+      }, 2000);
+    });
+
+  }
+
   render(){
     return(
       <tr >
@@ -52,7 +71,7 @@ class CurrencyRowComponent extends Component {
             </div>
           </td>
           <td>
-            <div className="rowCoinPrice">$ {this.props.currencyEntity.coinPrice}</div>
+            <div className="rowCoinPrice"><span className={this.state.priceClassName}>$ {this.props.currencyEntity.coinPrice}</span></div>
           </td>
           <td>
             <div className="rowCoinHigh24h">$ {this.props.currencyEntity.coinHigh24h}</div>

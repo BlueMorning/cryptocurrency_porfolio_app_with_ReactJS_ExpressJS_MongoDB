@@ -41,7 +41,7 @@ input[type="text"] {
 /*** ***/
 
 .mainContainer {
-  margin: 50px;
+  margin: 20px 20px 20px 20px;
 }
 
 .containerHeader {
@@ -92,7 +92,7 @@ input[type="text"] {
 
 .rowCoinPrice {
   text-align: right;
-  width: 130px;
+  width: 150px;
 }
 
 .rowCoinTotalVolume24h {
@@ -123,7 +123,7 @@ input[type="text"] {
   text-align: right;
   color: #34495e;
   font-weight: 400;
-  width: 100px;
+  width: 90px;
 }
 
 .rowCoinInputQty {
@@ -271,3 +271,23 @@ table {
  .labelLockPortfolio {
    margin: 0px 10px;
  }
+
+
+ /** Prices **/
+ .price-normal {
+   padding: 3px 10px;
+ }
+
+ .price-green {
+   background-color: #2ecc71;
+   color: #fff;
+   padding: 3px 10px;
+   border-radius: 5px;
+ }
+
+.price-red {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 5px;
+}
