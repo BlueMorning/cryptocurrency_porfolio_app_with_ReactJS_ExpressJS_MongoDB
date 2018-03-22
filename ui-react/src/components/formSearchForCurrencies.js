@@ -15,6 +15,7 @@ class FormSearchForCurrencies extends Component
     this.handleLockOnPortforlioChanged  = this.handleLockOnPortforlioChanged.bind(this);
     this.handleClearSearch              = this.handleClearSearch.bind(this);
     this.handleResetPortfolio           = this.handleResetPortfolio.bind(this);
+    this.handleIsLiveDataActivated      = this.handleIsLiveDataActivated.bind(this);
   }
 
 
@@ -42,14 +43,23 @@ class FormSearchForCurrencies extends Component
     this.props.onResetPortfolio();
   }
 
+  handleIsLiveDataActivated(event){
+    this.props.onLiveDataActivated(event.target.checked);
+  }
+
   render(){
     return (<div className="divformHeader">
               <div className="divformSearchForCurrencies">
                 <input type="text" value={this.state.searchName} onChange={this.handleInputCurrencyNameChanged} placeholder="Search for crypto-currencies"/>
                 <button className="button-blue-clear-search" onClick={this.handleClearSearch}>Clear Search</button>
-                <label className="labelLockPortfolio">Your portfolio only :</label>
+                <label className="labelLockPortfolio">Your portfolio only (Off/On)</label>
                 <label className="switch">
                   <input type="checkbox" value={this.state.isLockOnPortfolio} onClick={this.handleLockOnPortforlioChanged}/>
+                  <span className="slider round"></span>
+                </label>
+                <label className="labelIsDataLive">Live Data (Off/On)</label>
+                <label className="switch">
+                  <input type="checkbox" value={this.state.isLiveDataActivated} onClick={this.handleIsLiveDataActivated}/>
                   <span className="slider round"></span>
                 </label>
               </div>

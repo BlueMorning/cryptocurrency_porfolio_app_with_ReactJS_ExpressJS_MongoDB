@@ -24,6 +24,7 @@ class PortfolioComponent extends Component
     this.setIntervall           = null;
     this.currencyName           = "";
     this.isLockOnPortfolio      = false;
+    this.isLiveDataActivated    = false;
 
     this.handleSearchForCurrencies            = this.handleSearchForCurrencies.bind(this);
     this.handleOnLockPortfolioChanged         = this.handleOnLockPortfolioChanged.bind(this);
@@ -34,6 +35,7 @@ class PortfolioComponent extends Component
     this.handleAddCash                        = this.handleAddCash.bind(this);
     this.handleWithdrawCash                   = this.handleWithdrawCash.bind(this);
     this.handleResetPortfolio                 = this.handleResetPortfolio.bind(this);
+    this.handleIsLiveDataActivated            = this.handleIsLiveDataActivated.bind(this);
 
     this.clientRequest.getWallet(this.handleGetWalletDone);
     this.clientRequest.onSearchForCurrencies  = this.searchForCurrenciesDone.bind(this);
@@ -49,7 +51,8 @@ class PortfolioComponent extends Component
           <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}
                                     onLockPortfolioChanged={this.handleOnLockPortfolioChanged}
                                     onClearSearch={this.handleOnClearSearch}
-                                    onResetPortfolio={this.handleResetPortfolio}/>
+                                    onResetPortfolio={this.handleResetPortfolio}
+                                    onLiveDataActivated={this.handleIsLiveDataActivated}/>
           <WalletComponent          walletEntity={this.state.walletEntity}
                                     addCash={this.handleAddCash}
                                     withdrawCash={this.handleWithdrawCash} />
@@ -89,10 +92,13 @@ class PortfolioComponent extends Component
       if(this.setInterval != null){
         clearInterval(this.setInterval);
       }
-      this.setInterval = setInterval(() => {
-        this.clientRequest.getWallet(this.handleGetWalletDone);
-        this.clientRequest.searchForCurrencies(this.currencyName, this.isLockOnPortfolio);
-      }, 3000);
+
+      if(this.isLiveDataActivated){
+        this.setInterval = setInterval(() => {
+          this.clientRequest.getWallet(this.handleGetWalletDone);
+          this.clientRequest.searchForCurrencies(this.currencyName, this.isLockOnPortfolio);
+        }, 3000);
+      }
     });
   }
 
@@ -145,6 +151,16 @@ class PortfolioComponent extends Component
     this.clientRequest.resetPortfolio(() => {
       this.clientRequest.searchForCurrencies(this.currencyName, this.isLockOnPortfolio);
     })
+  }
+
+  handleIsLiveDataActivated(isLiveDataActivated){
+    this.isLiveDataActivated = isLiveDataActivated;
+    if(this.isLiveDataActivated){
+      this.setInterval = setInterval(() => {
+        this.clientRequest.getWallet(this.handleGetWalletDone);
+        this.clientRequest.searchForCurrencies(this.currencyName, this.isLockOnPortfolio);
+      }, 3000);
+    }
   }
 }
 
