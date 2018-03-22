@@ -68,7 +68,7 @@ class DatabasePortfolioModel {
     })
   }
 
-  getCurrenciesReferencesByCoinName(coinNameFilter, resultLimit, callback){
+  getCurrenciesReferencesByCoinName(coinNameFilter, isLockOnPortfolio, resultLimit, callback){
     this.connect(() => {
 
       let query = {}
@@ -77,10 +77,25 @@ class DatabasePortfolioModel {
         query = {coinName: {'$regex': `^${coinNameFilter}`,'$options' : 'i'}}
       }
 
+      if(isLockOnPortfolio == undefined || ! isLockOnPortfolio){
+        this.db.collection(this.collectionCurrencyReference).find(query).limit(resultLimit).toArray((err, result) => {
+          callback(result);
+        });
+      }
+      else{
+        this.db.collection(this.collectionCurrencyPortfolio).find({}).toArray((err, result) => {
+          let currencyPorfolio        = result;
+          let currencyPorfolioSymbols = currencyPorfolio.map((currency) => {
+            return currency.coinSymbol;
+          })
 
-      this.db.collection(this.collectionCurrencyReference).find(query).limit(resultLimit).toArray(function(err, result){
-        callback(result);
-      });
+          this.db.collection(this.collectionCurrencyReference).find(
+            { $and: [{coinSymbol: {$in: currencyPorfolioSymbols}}, query]}
+          ).limit(resultLimit).toArray(function(err, result){
+            callback(result);
+          });
+        })
+      }
     })
   }
 

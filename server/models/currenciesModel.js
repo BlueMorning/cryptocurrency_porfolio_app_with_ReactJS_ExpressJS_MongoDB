@@ -8,6 +8,7 @@ class CurrenciesModel
   {
     this.currenciesList                 = [];
     this.coinNameFilter                 = "";
+    this.isLockOnPortfolio              = false;
     this.resultLimit                    = 50;
     this.currencyAPIRequest             = new CurrencyAPIRequest();
     this.onRequestGetCurrencyDataList   = null;
@@ -59,9 +60,10 @@ class CurrenciesModel
   }
 
 
-  searchForCurrencyDataList(coinNameFilter){
+  searchForCurrencyDataList(coinNameFilter, isLockOnPortfolio){
 
-    this.coinNameFilter = coinNameFilter;
+    this.coinNameFilter    = coinNameFilter;
+    this.isLockOnPortfolio = isLockOnPortfolio;
 
     this.databasePortfolioModel.checkCurrencyReferencesExist((isReferences) => {
       if(! isReferences){
@@ -69,7 +71,7 @@ class CurrenciesModel
         this.currencyAPIRequest.requestAllCurrencies();
       }
       else{
-        this.databasePortfolioModel.getCurrenciesReferencesByCoinName(this.coinNameFilter, this.resultLimit, (currencyList) => {
+        this.databasePortfolioModel.getCurrenciesReferencesByCoinName(this.coinNameFilter, this.isLockOnPortfolio, this.resultLimit, (currencyList) => {
           this.currenciesList = currencyList;
           this.sendRequestGetCurrencyDataList(this.currenciesList);
         })

@@ -23,6 +23,7 @@ class PortfolioComponent extends Component
     this.currencyNameForSearch  = null;
 
     this.handleSearchForCurrencies            = this.handleSearchForCurrencies.bind(this);
+    this.handleOnLockPortfolioChanged         = this.handleOnLockPortfolioChanged.bind(this);
     this.handleBuyCurrency                    = this.handleBuyCurrency.bind(this);
     this.handleSellCurrency                   = this.handleSellCurrency.bind(this);
     this.refreshCurrencyRow                   = this.refreshCurrencyRow.bind(this);
@@ -32,7 +33,7 @@ class PortfolioComponent extends Component
 
     this.clientRequest.getWallet(this.handleGetWalletDone);
     this.clientRequest.onSearchForCurrencies  = this.searchForCurrenciesDone.bind(this);
-    this.clientRequest.searchForCurrencies("");
+    this.clientRequest.searchForCurrencies("", false);
   }
 
   render()
@@ -41,10 +42,12 @@ class PortfolioComponent extends Component
       <div className="mainContainer">
         <h1>{this.title}</h1>
         <div className="containerHeader">
-          <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}/>
+          <FormSearchForCurrencies  onSearchForCurrencies={this.handleSearchForCurrencies}
+                                    onLockPortfolioChanged={this.handleOnLockPortfolioChanged}
+                                    onClearSearch={this.handleOnClearSearch} />
           <WalletComponent          walletEntity={this.state.walletEntity}
                                     addCash={this.handleAddCash}
-                                    withdrawCash={this.handleWithdrawCash}/>
+                                    withdrawCash={this.handleWithdrawCash} />
         </div>
         <CurrenciesListComponent  currencies={this.state.currencyFilteredList}
                                   buyCurrency={this.handleBuyCurrency}
@@ -53,8 +56,12 @@ class PortfolioComponent extends Component
     )
   }
 
-  handleSearchForCurrencies(currencyName){
-    this.clientRequest.searchForCurrencies(currencyName);
+  handleSearchForCurrencies(currencyName, isLockOnPortfolio){
+    this.clientRequest.searchForCurrencies(currencyName, isLockOnPortfolio);
+  }
+
+  handleOnLockPortfolioChanged(currencyName, isLockOnPortfolio){
+    this.clientRequest.searchForCurrencies(currencyName, isLockOnPortfolio);
   }
 
   searchForCurrenciesDone(currencyDataList){
@@ -106,7 +113,6 @@ class PortfolioComponent extends Component
       this.handleGetWalletDone(walletEntity);
     })
   }
-
 }
 
 export default PortfolioComponent;

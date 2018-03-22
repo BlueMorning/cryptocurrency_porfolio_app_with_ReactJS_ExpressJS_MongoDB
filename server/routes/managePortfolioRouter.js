@@ -8,8 +8,7 @@ managePortfolioRouter.get("/searchForCurrencies", (req, res) => {
   currenciesModel.onRequestGetCurrencyDataList = function(currencies){
     res.send(currencies);
   }.bind(this);
-  currenciesModel.searchForCurrencyDataList(req.query.coinName);
-
+  currenciesModel.searchForCurrencyDataList(req.query.coinName, req.query.isLockOnPortfolio === "true");
 });
 
 managePortfolioRouter.get("/wallet", (req, res) => {

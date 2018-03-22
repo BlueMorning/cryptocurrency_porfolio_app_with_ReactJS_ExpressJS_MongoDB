@@ -6,11 +6,11 @@ class ClientRequest {
     }
 
 
-    searchForCurrencies(coinName){
+    searchForCurrencies(coinName, isLockOnPortfolio){
 
       let request = new XMLHttpRequest();
 
-      request.open("GET", this.urlBase+"/searchForCurrencies?coinName="+coinName);
+      request.open("GET", this.urlBase+"/searchForCurrencies?coinName="+coinName+"&isLockOnPortfolio="+isLockOnPortfolio);
       request.addEventListener("load", () => {
         let currencyEntities = [];
         if(request.status === 200){

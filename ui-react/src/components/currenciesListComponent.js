@@ -21,18 +21,20 @@ class CurrenciesListComponent extends Component
     return <div className="currencies-list">
             <table>
               <thead>
-                <th></th>
-                <th>Symbol</th>
-                <th>Current Value</th>
-                <th>Highest price 24h</th>
-                <th>Lowest price 24h</th>
-                <th>Variation 24h</th>
-                <th>Watch</th>
-                <th>Portfolio Quantity</th>
-                <th>Average purchase price</th>
-                <th>Transaction quantity</th>
-                <th>Buy</th>
-                <th>Sell</th>
+                <tr>
+                  <th></th>
+                  <th>Symbol</th>
+                  <th>Current Value</th>
+                  <th>Highest price 24h</th>
+                  <th>Lowest price 24h</th>
+                  <th>Variation 24h</th>
+                  <th>Watch</th>
+                  <th>Portfolio Quantity</th>
+                  <th>Average purchase price</th>
+                  <th>Transaction quantity</th>
+                  <th>Buy</th>
+                  <th>Sell</th>
+                </tr>
               </thead>
               <tbody>
 

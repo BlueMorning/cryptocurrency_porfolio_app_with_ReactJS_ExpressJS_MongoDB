@@ -52,6 +52,12 @@ input[type="text"] {
   margin-bottom: 20px;
 }
 
+.divformSearchForCurrencies {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 
 /*** Classes for coin rows ***/
 
@@ -65,7 +71,7 @@ input[type="text"] {
 }
 
 .rowContainerNameAndSymbol {
-
+  width: 100px;
 }
 
 .rowCoinName {
@@ -78,44 +84,51 @@ input[type="text"] {
 
 .rowCoinPrice {
   text-align: right;
+  width: 130px;
 }
 
 .rowCoinTotalVolume24h {
   text-align: right;
+  width: 150px;
 }
 
 .rowCoinHigh24h {
   text-align: right;
+  width: 150px;
 }
 
 .rowCoinLow24h {
   text-align: right;
+  width: 150px;
 }
 
 .rowCoinChange24h {
   text-align: right;
+  width: 120px;
 }
 
 .rowCoinActionWatch {
-
+  width: 80px;
 }
 
 .rowCoinQty {
   text-align: right;
   color: #34495e;
   font-weight: 400;
+  width: 100px;
 }
 
 .rowCoinInputQty {
   text-align: right;
+  width: 120px;
 }
 
 .rowCoinActionBuy {
-
+  width: 80px;
 }
 
 .rowCoinActionSale {
-
+  width: 80px;
 }
 
 
@@ -149,7 +162,7 @@ input[type="text"] {
     width: 80px;
  }
 
- .button-blue {
+ .button-blue, .button-blue-clear-search {
     display: inline-block; /* inline block can have a width and a height */
     padding: 5px 10px;
     font-weight: 300;
@@ -161,6 +174,11 @@ input[type="text"] {
     border: none;
     height: 36px;
     width: 80px;
+ }
+
+ .button-blue-clear-search {
+   width: 150px;
+   margin: 0px 20px;
  }
 
 
@@ -233,4 +251,9 @@ table {
 
  .cashInput {
    margin-left: 10px;
+ }
+
+ /*** Form ***/
+ .labelLockPortfolio {
+   margin: 0px 10px;
  }
