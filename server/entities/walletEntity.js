@@ -1,11 +1,11 @@
 class WalletEntity {
 
-  constructor(cash, portfolioValue, pendingProfit, profit){
-    this.cash           = cash;
-    this.portfolioValue = portfolioValue;
-    this.totalValue     = this.cash + this.portfolioValue;
-    this.pendingProfit  = pendingProfit;
-    this.profit         = profit;
+  constructor(){
+    this.cash           = 0;
+    this.portfolioValue = 0;
+    this.totalValue     = 0;
+    this.pendingProfit  = 0;
+    this.profit         = 0;
   }
 
 

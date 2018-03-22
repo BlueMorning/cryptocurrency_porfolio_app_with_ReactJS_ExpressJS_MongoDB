@@ -107,6 +107,22 @@ class ClientRequest {
 
       request.send(JSON.stringify({cashAmount: cashAmount}));
     }
+
+    resetPortfolio(callback){
+      let request = new XMLHttpRequest();
+      request.open("GET", this.urlBase + "/resetPortfolio");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.addEventListener("load", () => {
+        if(request.status == 200){
+          callback(request.response);
+        }
+        else{
+          callback({});
+        }
+      })
+
+      request.send();
+    }
 }
 
 module.exports = ClientRequest;

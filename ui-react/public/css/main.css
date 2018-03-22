@@ -52,6 +52,14 @@ input[type="text"] {
   margin-bottom: 20px;
 }
 
+.divformHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
 .divformSearchForCurrencies {
   display: flex;
   flex-direction: row;
@@ -134,7 +142,8 @@ input[type="text"] {
 
 
 /*** Buttons ***/
-.button-red {
+.button-red,
+.button-red-reset {
     display: inline-block; /* inline block can have a width and a height */
     padding: 5px 10px;
     font-weight: 300;
@@ -181,6 +190,11 @@ input[type="text"] {
    margin: 0px 20px;
  }
 
+ .button-red-reset {
+   width: 120px;
+   margin: 0px 50px;
+ }
+
 
 /*** Table ***/
 table {
@@ -208,7 +222,7 @@ table {
    background-color: #ecf0f1;
  }
  table tr:nth-child(even) td{
-
+   background-color: #bdc3c7;
  }
 
  .td-number {

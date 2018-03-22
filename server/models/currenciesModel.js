@@ -189,6 +189,10 @@ class CurrenciesModel
     this.databasePortfolioModel.withdrawCashFromWallet(cashAmount, callback);
   }
 
+  resetPortfolio(callback){
+    this.databasePortfolioModel.resetPortfolio(callback)
+  }
+
 }
 
 

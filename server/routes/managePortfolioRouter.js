@@ -49,6 +49,12 @@ managePortfolioRouter.post("/withdrawCashFromWallet", (req, res) => {
 })
 
 
+managePortfolioRouter.get("/resetPortfolio", (req, res) => {
+  const currenciesModel = new CurrenciesModel();
+  currenciesModel.resetPortfolio(() => {
+    res.send();
+  });
+})
 
 
 

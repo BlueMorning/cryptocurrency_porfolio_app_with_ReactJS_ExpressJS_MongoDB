@@ -23,7 +23,6 @@ class DatabasePortfolioModel {
     if(true || this.db == null || ! this.db.connected){
       MongoClient.connect(this.url, (err, client) => {
         assert.equal(null, err);
-        console.log("Connected successfully to MongoDB");
         this.db = client.db(this.dbName);
         callback();
       });
@@ -237,22 +236,39 @@ class DatabasePortfolioModel {
               let walletEntity = res;
 
               if(walletEntity != null && walletEntity != undefined){
-              this.calculatePortfolioPurchaseValue((portfolioPurchaseValue) => {
+                this.calculatePortfolioPurchaseValue((portfolioPurchaseValue) => {
 
-                  this.calculatePortfolioCurrentValue((portfolioCurrentValue) => {
+                    if(portfolioPurchaseValue != undefined && portfolioPurchaseValue != null){
 
-                    walletEntity.portfolioValue = portfolioCurrentValue;
-                    walletEntity.pendingProfit  = portfolioCurrentValue - portfolioPurchaseValue;
-                    walletEntity.totalValue     = portfolioCurrentValue + walletEntity.cash;
-                    this.db.collection(this.collectionCurrencyWallet).updateOne({_id: walletEntity._id}, walletEntity, function(err, res){
+                        this.calculatePortfolioCurrentValue((portfolioCurrentValue) => {
+
+                        walletEntity.portfolioValue = portfolioCurrentValue;
+                        walletEntity.pendingProfit  = portfolioCurrentValue - portfolioPurchaseValue;
+                        walletEntity.totalValue     = portfolioCurrentValue + walletEntity.cash;
+                        this.db.collection(this.collectionCurrencyWallet).updateOne({_id: walletEntity._id}, walletEntity, function(err, res){
+                          this.close();
+                          if(callback != null && callback != undefined){
+                            callback(walletEntity);
+                          }
+                        }.bind(this));
+                      })
+                    }
+                    else{
                       this.close();
                       if(callback != null && callback != undefined){
                         callback(walletEntity);
                       }
-                    }.bind(this));
+                    }
                   })
-              })
-            }
+              }
+              else{
+                walletEntity = new WalletEntity();
+                this.db.collection(this.collectionCurrencyWallet).insertOne(walletEntity,
+                  function(err, res){
+                    callback(walletEntity);
+                  }.bind(this)
+                )
+              }
         })
       })
     }
@@ -339,6 +355,18 @@ class DatabasePortfolioModel {
       this.connect(() => {
         this.db.collection(this.collectionCurrencyPortfolio).find().toArray((err, portfolioCurrencies) => {
           callback(portfolioCurrencies);
+        })
+      })
+    }
+
+    resetPortfolio(callback){
+      this.connect(() => {
+        this.db.collection(this.collectionCurrencyWallet).drop(() => {
+          this.db.collection(this.collectionCurrencyPortfolio).drop(() => {
+            this.db.collection(this.collectionCurrencyReference).drop(() => {
+              callback();
+            })
+          })
         })
       })
     }
