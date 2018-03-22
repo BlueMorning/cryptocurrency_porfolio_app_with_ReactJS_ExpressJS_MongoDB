@@ -73,8 +73,12 @@ class DatabasePortfolioModel {
       let query = {}
 
       if(coinNameFilter != null && coinNameFilter != ""){
-        query = {coinName: {'$regex': `^${coinNameFilter}`,'$options' : 'i'}}
+        query = {$or: [ {coinName:   {'$regex': `^${coinNameFilter}`, $options: "i"}},
+                        {coinSymbol: {'$regex': `^${coinNameFilter}`, $options: "i"}}
+                      ]
+                }
       }
+
 
       if(isLockOnPortfolio == undefined || ! isLockOnPortfolio){
         this.db.collection(this.collectionCurrencyReference).find(query).limit(resultLimit).toArray((err, result) => {
@@ -139,7 +143,7 @@ class DatabasePortfolioModel {
           }
           else{
             currencyPortfolio.quantity   -= quantity;
-            currencyPortfolio.totalPrice -= quantity * currencyEntity.coinPrice;
+            currencyPortfolio.totalPrice -= quantity * currencyPortfolio.averagePrice;
             salePrice                     = quantity * currencyEntity.coinPrice;
             profitMade                    = (currencyEntity.coinPrice - currencyPortfolio.averagePrice) * quantity;
           }
@@ -148,19 +152,31 @@ class DatabasePortfolioModel {
 
 
           if(currencyPortfolio._id != undefined && currencyPortfolio._id != null){
-            this.db.collection(this.collectionCurrencyPortfolio).updateOne(
-              {_id:           currencyPortfolio._id},
-              { $set:
-                {
-                  quantity:      currencyPortfolio.quantity,
-                  totalPrice:    currencyPortfolio.totalPrice,
-                  averagePrice:  currencyPortfolio.averagePrice}
-                },
-              function(err, res){
-                this.onMakeCurrencyTransactionDone(currencyPortfolio);
-                this.updateWalletCashAndProfit(purchasePrice, salePrice, profitMade);
-                this.close();
-              }.bind(this))
+
+            if(currencyPortfolio.quantity > 0){
+              this.db.collection(this.collectionCurrencyPortfolio).updateOne(
+                {_id:           currencyPortfolio._id},
+                { $set:
+                  {
+                    quantity:      currencyPortfolio.quantity,
+                    totalPrice:    currencyPortfolio.totalPrice,
+                    averagePrice:  currencyPortfolio.averagePrice}
+                  },
+                function(err, res){
+                  this.onMakeCurrencyTransactionDone(currencyPortfolio);
+                  this.updateWalletCashAndProfit(purchasePrice, salePrice, profitMade);
+                  this.close();
+                }.bind(this))
+            }
+            else{
+              this.db.collection(this.collectionCurrencyPortfolio).deleteOne(
+                {_id:           currencyPortfolio._id},
+                function(err, res){
+                  this.onMakeCurrencyTransactionDone(currencyPortfolio);
+                  this.updateWalletCashAndProfit(purchasePrice, salePrice, profitMade);
+                  this.close();
+                }.bind(this))
+            }
           }
           else {
             this.db.collection(this.collectionCurrencyPortfolio).insertOne(
@@ -277,11 +293,15 @@ class DatabasePortfolioModel {
 
       this.connect(() => {
 
+        let totalPurchaseValue = 0;
+
         this.db.collection(this.collectionCurrencyPortfolio).find().toArray((err, portfolioCurrencies) => {
 
-          let totalPurchaseValue = portfolioCurrencies.reduce((totalPrice, portfolioCurrency) => {
-            return totalPrice + portfolioCurrency.totalPrice;
-          }, 0);
+          if(Array.isArray(portfolioCurrencies) && portfolioCurrencies.length > 0){
+            totalPurchaseValue = portfolioCurrencies.reduce((totalPrice, portfolioCurrency) => {
+              return totalPrice + portfolioCurrency.totalPrice;
+            }, 0);
+          }
 
           callback(totalPurchaseValue);
           this.close();

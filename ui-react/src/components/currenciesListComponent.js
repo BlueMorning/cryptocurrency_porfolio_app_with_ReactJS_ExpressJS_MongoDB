@@ -29,8 +29,8 @@ class CurrenciesListComponent extends Component
                   <th>Lowest price 24h</th>
                   <th>Variation 24h</th>
                   <th>Watch</th>
-                  <th>Portfolio Quantity</th>
                   <th>Average purchase price</th>
+                  <th>Portfolio Quantity</th>
                   <th>Transaction quantity</th>
                   <th>Buy</th>
                   <th>Sell</th>

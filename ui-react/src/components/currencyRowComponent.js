@@ -39,10 +39,10 @@ class CurrencyRowComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.currencyEntity.coinPrice > nextProps.currencyEntity.coinPrice) {
+    if (this.props.currencyEntity.coinPrice < nextProps.currencyEntity.coinPrice) {
       this.toggleClassListBlink("price-normal", "price-green");
     }
-    else if(this.props.currencyEntity.coinPrice < nextProps.currencyEntity.coinPrice){
+    else if(this.props.currencyEntity.coinPrice > nextProps.currencyEntity.coinPrice){
       this.toggleClassListBlink("price-normal", "price-red");
     }
   }
@@ -86,10 +86,10 @@ class CurrencyRowComponent extends Component {
             <div className="rowCoinActionWatch"><button className="button-blue">Watch</button></div>
           </td>
           <td>
-            <div className="rowCoinQty">{this.props.currencyEntity.portfolioQuantity}</div>
+            <div className="rowCoinPrice">$ {this.mathHelper.precisionRound(this.props.currencyEntity.portfolioAveragePrice, 6)}</div>
           </td>
           <td>
-            <div className="rowCoinPrice">$ {this.mathHelper.precisionRound(this.props.currencyEntity.portfolioAveragePrice, 6)}</div>
+            <div className="rowCoinQty">{this.props.currencyEntity.portfolioQuantity}</div>
           </td>
           <td>
             <div className="rowCoinInputQty"><input type="number" className="coinInputQty"
