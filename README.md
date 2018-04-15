@@ -17,6 +17,8 @@ This application aims at providing :
 ### List of cryptocurrencies
 Cryptocurrencies can be searched by name or code
 ![Optional Text](./documentation/screenshots/search_by_name.png)
+Buy/Sell actions can be performed from the list
+![Optional Text](./documentation/screenshots/sell.png)
 
 ### Lock on the search on portfolio cryptocurrencies
 An option allows to lock the search only on the cryptocurrencies that the portfolio contains
@@ -33,4 +35,4 @@ An option allows to lock the search only on the cryptocurrencies that the portfo
 - When a purchase/sale on cryptocurrencies is performed then the wallet is updated
 - The pending profit represents the profit which would be made if the currencies of the portofio were sold
 ![Optional Text](./documentation/screenshots/wallet.png)
-![Optional Text](./documentation/screenshots/sell.png)
+
