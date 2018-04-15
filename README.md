@@ -1,4 +1,4 @@
-# A 4-day project to build a cryptocurrenciy portfolio application from scratch
+# A 4-day project to build a cryptocurrency portfolio application from scratch
 
 ## At a glance
 This application aims at providing :
